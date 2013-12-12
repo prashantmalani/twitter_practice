@@ -42,7 +42,11 @@ def userTweets(username):
     For example,
         python twitter_api.py -u bostonpython
     """
-    pass
+    api = twitter.Api(consumer_key=key,consumer_secret=secret,access_token_key=access_key,access_token_secret=access_secret)
+    user_tweets = api.GetUserTimeline(screen_name=username)
+    for tweet in user_tweets:
+        util.safe_print(tweet.GetText())
+
 
 def trendingTweets():
     """
@@ -51,4 +55,11 @@ def trendingTweets():
     To test this function, at the command line run:
         python twitter_api.py -w
     """
-    pass
+    api = twitter.Api(consumer_key=key,consumer_secret=secret,access_token_key=access_key,access_token_secret=access_secret)
+    trending_topics = api.GetTrendsCurrent()
+    for topic in trending_topics:
+        util.safe_print(topic.name)
+        tweets = api.GetSearch(topic.name, count=2)
+        for tweet in tweets[:2]:
+            util.safe_print(tweet.GetText())
+        util.safe_print('-------------------------------------------')
